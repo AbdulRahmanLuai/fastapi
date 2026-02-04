@@ -19,7 +19,6 @@ router = APIRouter(
 @router.get('', response_model=List[schemas.PostOut])
 def get_posts(db: Session = Depends(get_db)):
     posts = db.query(models.Post, func.count(models.Vote.user_id).label('votes')).join(models.Vote, models.Vote.post_id == models.Post.id, isouter=True).group_by(models.Post.id)
-    print(posts)
     return posts.all()
 
 
